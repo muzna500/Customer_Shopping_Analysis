@@ -65,6 +65,7 @@ An interactive Power BI dashboard was created to visualize insights, including:
 - Product performance
 - Subscription behavior
 - Discount usage patterns
+  
 📌 The dashboard enables stakeholders to quickly explore trends and make informed decisions.
 
 ## Business Recommendations
