@@ -53,15 +53,79 @@ SQL queries were written to answer key business questions:
     GROUP BY gender
     ORDER BY revenue DESC
 
-3. Identification of high-spending customers who used discounts
-4. Top 5 products by average review rating
-5. Comparison of average purchase value by shipping type
-6. Spending analysis of subscribers vs non-subscribers
-7. Identification of discount-dependent products
-8. Customer segmentation (New, Returning, Loyal)
-9. Top 3 products per category
-10. Relationship between repeat buyers and subscription status
-11. Revenue contribution by age group
+2. Identification of high-spending customers who used discounts
+```sql
+    SELECT customer_id,purchase_amount
+    FROM customer
+    WHERE discount_applied ='Yes' AND purchase_amount>= (SELECT AVG(purchase_amount) FROM customer)
+
+3. Top 5 products by average review rating
+```sql
+    SELECT item_purchased , ROUND(AVG(review_rating:: numeric),2) AS avg_review
+    FROM customer
+    GROUP BY item_purchased
+    ORDER BY avg_review DESC
+    LIMIT 5
+
+4. Comparison of average purchase value by shipping type
+```sql
+    SELECT shipping_type, ROUND(AVG(purchase_amount),2) AS average_amount
+    FROM customer
+    WHERE shipping_type IN ('Standard', 'Express')
+    GROUP BY shipping_type
+    ORDER BY average_amount DESC
+
+5. Spending analysis of subscribers vs non-subscribers
+```sql
+    SELECT subscription_status, 
+    COUNT(customer_id) AS total_customers,
+    ROUND(AVG(purchase_amount),2) AS average_spend,
+    SUM(purchase_amount) AS total_revenue
+    FROM customer
+    GROUP BY subscription_status
+    ORDER BY average_spend, total_revenue DESC
+
+6. Identification of discount-dependent products
+```sql
+    SELECT item_purchased,
+    ROUND(100 * SUM(CASE WHEN discount_applied ='Yes' THEN 1 ELSE 0 END)/COUNT(*),2)AS discount_rate
+    FROM customer
+    GROUP BY item_purchased
+    ORDER BY discount_rate DESC
+    LIMIT 5;
+
+7. Customer segmentation (New, Returning, Loyal)
+```sql
+    WITH customer_type AS (
+    SELECT customer_id, previous_purchases,
+    CASE 
+	    WHEN previous_purchases = 1 THEN 'New'
+	    WHEN previous_purchases BETWEEN 2 AND 10 THEN 'Returning'
+	    ELSE 'Loyal'
+	    END AS customer_segment
+    FROM customer
+    )
+
+    SELECT customer_segment, COUNT(*) AS "Number of Customers"
+    FROM customer_type
+    GROUP BY customer_segment
+
+8. Top 3 products per category
+```sql
+    WITH item_counts AS (
+    SELECT category,
+    item_purchased,
+    COUNT(customer_id) AS total_orders,
+    ROW_NUMBER() OVER(partition by category order by count(customer_id) DESC) AS item_rank
+    FROM customer
+    GROUP BY category, item_purchased
+    )
+
+    SELECT item_rank, category, item_purchased, total_orders
+    FROM item_counts
+    WHERE item_rank <= 3
+9. Relationship between repeat buyers and subscription status
+10. Revenue contribution by age group
 
 ## Power BI Dashboard
 An interactive Power BI dashboard was created to visualize insights, including:
