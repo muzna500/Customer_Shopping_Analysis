@@ -52,12 +52,14 @@ SQL queries were written to answer key business questions:
     FROM customer
     GROUP BY gender
     ORDER BY revenue DESC
+```
 
 2. Identification of high-spending customers who used discounts
 ```sql
     SELECT customer_id,purchase_amount
     FROM customer
-    WHERE discount_applied ='Yes' AND purchase_amount>= (SELECT AVG(purchase_amount) FROM customer)
+    WHERE discount_applied ='Yes' AND purchase_amount>= (SELECT AVG(purchase_amount) FROM customer);
+```
 
 3. Top 5 products by average review rating
 ```sql
@@ -66,6 +68,7 @@ SQL queries were written to answer key business questions:
     GROUP BY item_purchased
     ORDER BY avg_review DESC
     LIMIT 5
+```
 
 4. Comparison of average purchase value by shipping type
 ```sql
@@ -84,6 +87,7 @@ SQL queries were written to answer key business questions:
     FROM customer
     GROUP BY subscription_status
     ORDER BY average_spend, total_revenue DESC
+```
 
 6. Identification of discount-dependent products
 ```sql
@@ -93,6 +97,7 @@ SQL queries were written to answer key business questions:
     GROUP BY item_purchased
     ORDER BY discount_rate DESC
     LIMIT 5;
+```
 
 7. Customer segmentation (New, Returning, Loyal)
 ```sql
@@ -109,6 +114,7 @@ SQL queries were written to answer key business questions:
     SELECT customer_segment, COUNT(*) AS "Number of Customers"
     FROM customer_type
     GROUP BY customer_segment
+```
 
 8. Top 3 products per category
 ```sql
@@ -124,8 +130,25 @@ SQL queries were written to answer key business questions:
     SELECT item_rank, category, item_purchased, total_orders
     FROM item_counts
     WHERE item_rank <= 3
+```
+
 9. Relationship between repeat buyers and subscription status
+```sql
+	SELECT COUNT(customer_id) AS repeat_buyers, 
+	subscription_status
+	FROM customer
+	WHERE previous_purchases > 5
+	GROUP BY subscription_status
+```
+
 10. Revenue contribution by age group
+```sql
+	SELECT age_group, 
+	SUM(purchase_amount) AS total_revenue
+	FROM customer
+	GROUP BY age_group
+	ORDER BY total_revenue DESC
+```
 
 ## Power BI Dashboard
 An interactive Power BI dashboard was created to visualize insights, including:
@@ -135,7 +158,9 @@ An interactive Power BI dashboard was created to visualize insights, including:
 - Product performance
 - Subscription behavior
 - Discount usage patterns
-  
+
+![Intractive_Dashboard](Dashboard.jpg)
+
 📌 The dashboard enables stakeholders to quickly explore trends and make informed decisions.
 
 ## Business Recommendations
@@ -163,6 +188,10 @@ This project strengthened skills in:
 - Customer segmentation
 - Dashboard creation
 - Translating data insights into actionable business recommendations
+
+## Author
+Muzna Mokashi
+Data Analyst building hands-on projects using SQL,Python, Databricks, and data visualization.
 
 
 
