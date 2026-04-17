@@ -47,15 +47,21 @@ Data preparation and exploration were performed using Python.
 SQL queries were written to answer key business questions:
 
 1. Revenue comparison by gender
-2. Identification of high-spending customers who used discounts
-3. Top 5 products by average review rating
-4. Comparison of average purchase value by shipping type
-5. Spending analysis of subscribers vs non-subscribers
-6. Identification of discount-dependent products
-7. Customer segmentation (New, Returning, Loyal)
-8. Top 3 products per category
-9. Relationship between repeat buyers and subscription status
-10. Revenue contribution by age group
+```sql
+    SELECT gender, SUM(purchase_amount) AS revenue
+    FROM customer
+    GROUP BY gender
+    ORDER BY revenue DESC
+
+3. Identification of high-spending customers who used discounts
+4. Top 5 products by average review rating
+5. Comparison of average purchase value by shipping type
+6. Spending analysis of subscribers vs non-subscribers
+7. Identification of discount-dependent products
+8. Customer segmentation (New, Returning, Loyal)
+9. Top 3 products per category
+10. Relationship between repeat buyers and subscription status
+11. Revenue contribution by age group
 
 ## Power BI Dashboard
 An interactive Power BI dashboard was created to visualize insights, including:
