@@ -77,6 +77,7 @@ SQL queries were written to answer key business questions:
     WHERE shipping_type IN ('Standard', 'Express')
     GROUP BY shipping_type
     ORDER BY average_amount DESC
+```
 
 5. Spending analysis of subscribers vs non-subscribers
 ```sql
@@ -190,7 +191,8 @@ This project strengthened skills in:
 - Translating data insights into actionable business recommendations
 
 ## Author
-Muzna Mokashi
+### Muzna Mokashi
+
 Data Analyst building hands-on projects using SQL,Python, Databricks, and data visualization.
 
 
